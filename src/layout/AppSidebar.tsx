@@ -34,6 +34,7 @@ const navItems: NavItem[] = [
     subItems: [
       { name: "Ecommerce", path: "/", pro: false },
       { name: "Academic Year", path: "/academicYear", pro: false },
+      { name: "Employee", path: "/employee", pro: false },
     ],
   },
   {
@@ -170,9 +171,8 @@ const AppSidebar: React.FC = () => {
               {/* Parent Button */}
               <button
                 onClick={() => handleSubmenuToggle(index, menuType)}
-                className={`menu-item group ${openSubmenu?.type === menuType && openSubmenu?.index === index ? "menu-item-active" : "menu-item-inactive"} cursor-pointer ${
-                  !isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"
-                }`}
+                className={`menu-item group ${openSubmenu?.type === menuType && openSubmenu?.index === index ? "menu-item-active" : "menu-item-inactive"} cursor-pointer ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"
+                  }`}
               >
                 <span className={`${openSubmenu?.type === menuType && openSubmenu?.index === index ? "menu-item-icon-active" : "menu-item-icon-inactive"}`}>
                   {nav.icon}
@@ -180,9 +180,8 @@ const AppSidebar: React.FC = () => {
                 {(isExpanded || isHovered || isMobileOpen) && <span className="menu-item-text">{nav.name}</span>}
                 {(isExpanded || isHovered || isMobileOpen) && (
                   <ChevronDownIcon
-                    className={`ml-auto w-5 h-5 transition-transform duration-200 ${
-                      openSubmenu?.type === menuType && openSubmenu?.index === index ? "rotate-180 text-brand-500" : ""
-                    }`}
+                    className={`ml-auto w-5 h-5 transition-transform duration-200 ${openSubmenu?.type === menuType && openSubmenu?.index === index ? "rotate-180 text-brand-500" : ""
+                      }`}
                   />
                 )}
               </button>
