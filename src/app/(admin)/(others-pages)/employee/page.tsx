@@ -1,32 +1,37 @@
 'use client';
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import React from "react";
+import React, { useState } from "react";
 import CustomTable from "@/components/tables/CustomTable";
-import Badge from "@/components/ui/badge/Badge";
-import Image from "next/image";
+import { useModal } from "@/hooks/useModal";
+import EmpoyeeModal from "./_components/EmployeeModal";
 
+type initialDataType = {
+  srNo: number;
+  address: string;
+  created_ts: string;   // you used "NOW()", so keeping it string
+  date_of_birth: string;
+  db_user: string;
+  department: string;
+  designation: string;
+  email: string;
+  emergency_contact: string;
+  employee_id: string;
+  employee_type: "TEACHER" | "ADMIN" | "SUPPORT"; // union type from your data
+  experience_years: number;
+  first_name: string;
+  hire_date: string;
+  is_active: boolean;
+  last_name: string;
+  phone: string;
+  qualification: string;
+  salary: number;
+  updated_ts: string;
+  school_id: number;
+};
 
-const columns = [
-  { key: "employee_id", label: "Employee ID" },
-  { key: "first_name", label: "First Name" },
-  { key: "", label: "Active", render: (value: boolean) => value ? "Yes" : "No" },
+const initialData: initialDataType[] = [
   {
-    key: "is_active",
-    label: "Status",
-    render: (value: boolean) => (
-      <Badge
-        size="sm"
-        color={value === true ? "success" : value === false ? "warning" : "error"}
-      >
-        {value === true ? "active" : "inactive"}
-      </Badge>
-    ),
-  },
-  { key: "phone", label: "Phone" },
-];
-
-const data = [
-  {
+    srNo: 1,
     address: "123 MG Road, Bangalore, Karnataka",
     created_ts: "NOW()",
     date_of_birth: "1980-05-15",
@@ -44,11 +49,12 @@ const data = [
     last_name: "Sharma",
     phone: "9876543210",
     qualification: "M.Ed",
-    salary: 75000.00,
+    salary: 75000.0,
     updated_ts: "NOW()",
     school_id: 1,
   },
   {
+    srNo: 2,
     address: "45 Park Street, Kolkata, West Bengal",
     created_ts: "NOW()",
     date_of_birth: "1985-08-22",
@@ -66,11 +72,12 @@ const data = [
     last_name: "Das",
     phone: "9876512340",
     qualification: "MBA",
-    salary: 60000.00,
+    salary: 60000.0,
     updated_ts: "NOW()",
     school_id: 2,
   },
   {
+    srNo: 3,
     address: "89 Sector 15, Chandigarh, Punjab",
     created_ts: "NOW()",
     date_of_birth: "1990-11-10",
@@ -88,11 +95,12 @@ const data = [
     last_name: "Singh",
     phone: "9876523450",
     qualification: "B.Sc",
-    salary: 35000.00,
+    salary: 35000.0,
     updated_ts: "NOW()",
     school_id: 3,
   },
   {
+    srNo: 4,
     address: "22 MG Road, Pune, Maharashtra",
     created_ts: "NOW()",
     date_of_birth: "1982-03-05",
@@ -110,11 +118,12 @@ const data = [
     last_name: "Patel",
     phone: "9876534560",
     qualification: "M.Sc",
-    salary: 55000.00,
+    salary: 55000.0,
     updated_ts: "NOW()",
     school_id: 4,
   },
   {
+    srNo: 5,
     address: "67 MG Road, Chennai, Tamil Nadu",
     created_ts: "NOW()",
     date_of_birth: "1978-12-19",
@@ -132,11 +141,12 @@ const data = [
     last_name: "Ram",
     phone: "9876545670",
     qualification: "M.A",
-    salary: 58000.00,
+    salary: 58000.0,
     updated_ts: "NOW()",
     school_id: 5,
   },
   {
+    srNo: 6,
     address: "12 Hill Road, Mumbai, Maharashtra",
     created_ts: "NOW()",
     date_of_birth: "1988-07-30",
@@ -154,11 +164,12 @@ const data = [
     last_name: "Joshi",
     phone: "9876556780",
     qualification: "MLIS",
-    salary: 42000.00,
+    salary: 42000.0,
     updated_ts: "NOW()",
     school_id: 1,
   },
   {
+    srNo: 7,
     address: "3 Park Avenue, Kolkata, West Bengal",
     created_ts: "NOW()",
     date_of_birth: "1992-02-28",
@@ -176,11 +187,12 @@ const data = [
     last_name: "Bose",
     phone: "9876567890",
     qualification: "M.Sc",
-    salary: 48000.00,
+    salary: 48000.0,
     updated_ts: "NOW()",
     school_id: 2,
   },
   {
+    srNo: 8,
     address: "45 Sector 10, Chandigarh, Punjab",
     created_ts: "NOW()",
     date_of_birth: "1985-09-15",
@@ -198,11 +210,12 @@ const data = [
     last_name: "Kumar",
     phone: "9876578901",
     qualification: "MA Psychology",
-    salary: 40000.00,
+    salary: 40000.0,
     updated_ts: "NOW()",
     school_id: 3,
   },
   {
+    srNo: 9,
     address: "99 MG Road, Pune, Maharashtra",
     created_ts: "NOW()",
     date_of_birth: "1979-04-02",
@@ -220,11 +233,12 @@ const data = [
     last_name: "Desai",
     phone: "9876589012",
     qualification: "M.A History",
-    salary: 56000.00,
+    salary: 56000.0,
     updated_ts: "NOW()",
     school_id: 4,
   },
   {
+    srNo: 10,
     address: "21 Anna Salai, Chennai, Tamil Nadu",
     created_ts: "NOW()",
     date_of_birth: "1983-06-25",
@@ -242,33 +256,80 @@ const data = [
     last_name: "Nair",
     phone: "9876590123",
     qualification: "MBA HR",
-    salary: 65000.00,
+    salary: 65000.0,
     updated_ts: "NOW()",
     school_id: 5,
-  },
+  }
+];
+
+const columns: { key: keyof initialDataType; label: string }[] = [
+  { key: "srNo", label: "Sr No" },
+  { key: "employee_id", label: "Employee ID" },
+  { key: "first_name", label: "First Name" },
+  { key: "phone", label: "Phone" },
+  { key: "is_active", label: "Status" }
 ];
 
 export default function Employee() {
-  const handleEdit = (row: number) => {
-    console.log("Edit clicked", row);
+  const [data, setData] = useState(initialData);
+
+  const [editData, setEditData] = useState<initialDataType | null>(null);
+  const { isOpen, openModal, closeModal } = useModal();
+
+  const handleCreate = () => {
+    setEditData(null); // clear edit data
+    openModal();
   };
 
-  const handleDelete = (row: number) => {
-    console.log("Delete clicked", row);
+  const handleEdit = (row: initialDataType) => {
+    setEditData(row); // pass data to modal
+    openModal();
+  };
+
+  const handleDelete = (row: initialDataType) => {
+    setData((prev) => prev.filter((item) => item.srNo !== row.srNo));
+  };
+
+  const handleModalSubmit = (formValues: Omit<initialDataType, "srNo">) => {
+    if (editData) {
+      // Update record
+      setData((prev) =>
+        prev.map((item) =>
+          item.srNo === editData.srNo ? { ...item, ...formValues } : item
+        )
+      );
+    } else {
+      // Create new record
+      setData((prev) => [
+        ...prev,
+        { srNo: prev.length + 1, ...formValues },
+      ]);
+    }
   };
 
   return (
     <div>
       <PageBreadcrumb pageTitle="Employee" />
       <div className="space-y-6">
-        <CustomTable
-          title="Employee"
-          columns={columns}
-          data={data}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          enableSearch
-        />
+        {isOpen === true ? (
+          <EmpoyeeModal
+            isOpen={isOpen}
+            onClose={closeModal}
+            onSubmit={handleModalSubmit}
+            initialData={editData}
+          />
+        ) : (
+          <CustomTable
+            title="Employee"
+            columns={columns}
+            data={data}
+            onAdd={handleCreate}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            sorting
+            enableSearch
+          />
+        )}
       </div>
     </div>
   );

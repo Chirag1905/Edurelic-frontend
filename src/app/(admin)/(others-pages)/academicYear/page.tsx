@@ -1,10 +1,6 @@
 'use client';
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-<<<<<<< HEAD
-import React from "react";
-=======
 import React, { useState } from "react";
->>>>>>> main
 import CustomTable from "@/components/tables/CustomTable";
 import AcademicYearModal from "./_components/AcademicYearModal";
 import { useModal } from "@/hooks/useModal";
