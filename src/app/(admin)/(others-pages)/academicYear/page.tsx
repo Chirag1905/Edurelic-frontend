@@ -1,94 +1,107 @@
 'use client';
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
+<<<<<<< HEAD
 import React from "react";
+=======
+import React, { useState } from "react";
+>>>>>>> main
 import CustomTable from "@/components/tables/CustomTable";
-import Badge from "@/components/ui/badge/Badge";
-import Image from "next/image";
+import AcademicYearModal from "./_components/AcademicYearModal";
+import { useModal } from "@/hooks/useModal";
 
-// export const metadata: Metadata = {
-//     title: "Next.js Blank Page | TailAdmin - Next.js Dashboard Template",
-//     description: "This is Next.js Blank Page TailAdmin Dashboard Template",
-// };
+type AcademicYearData = {
+  srNo: number;
+  academicYearName: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+};
 
-const columns = [
-    {
-        key: "user",
-        label: "User",
-        render: (value: any) => (
-            <div className="flex items-center gap-3">
-                <div className="w-10 h-10 overflow-hidden rounded-full">
-                    <Image src={value.image} alt={value.name} width={40} height={40} />
-                </div>
-                <div>
-                    <span className="block font-medium text-gray-800 dark:text-white/90">
-                        {value.name}
-                    </span>
-                    <span className="block text-gray-500 text-xs dark:text-gray-400">
-                        {value.role}
-                    </span>
-                </div>
-            </div>
-        ),
-    },
-    {
-        key: "projectName",
-        label: "Project Name",
-    },
-    {
-        key: "status",
-        label: "Status",
-        render: (value: string) => (
-            <Badge
-                size="sm"
-                color={value === "Active" ? "success" : value === "Pending" ? "warning" : "error"}
-            >
-                {value}
-            </Badge>
-        ),
-    },
-    {
-        key: "budget",
-        label: "Budget",
-    },
+const initialData: AcademicYearData[] = [
+  {
+    srNo: 1,
+    academicYearName: "2023-2024",
+    startDate: "2023-06-01",
+    endDate: "2024-05-31",
+    status: "inactive",
+  },
+  {
+    srNo: 2,
+    academicYearName: "2024-2025",
+    startDate: "2024-06-01",
+    endDate: "2025-05-31",
+    status: "active",
+  },
 ];
 
-const data = [
-    {
-        user: { image: "/images/user/user-17.jpg", name: "Lindsey Curtis", role: "Web Designer" },
-        projectName: "Agency Website",
-        status: "Active",
-        budget: "3.9K",
-    },
-    {
-        user: { image: "/images/user/user-18.jpg", name: "Kaiya George", role: "Project Manager" },
-        projectName: "Technology",
-        status: "Pending",
-        budget: "24.9K",
-    },
+const columns: { key: keyof AcademicYearData; label: string }[] = [
+  { key: "srNo", label: "Sr No" },
+  { key: "academicYearName", label: "Academic Year Name" },
+  { key: "startDate", label: "Start Date" },
+  { key: "endDate", label: "End Date" },
 ];
 
 export default function AcademicYear() {
-    const handleEdit = (row: number) => {
-        console.log("Edit clicked", row);
-    };
+  const [data, setData] = useState(initialData);
 
-    const handleDelete = (row: number) => {
-        console.log("Delete clicked", row);
-    };
+  const [editData, setEditData] = useState<AcademicYearData | null>(null);
+  const { isOpen, openModal, closeModal } = useModal();
 
-    return (
-        <div>
-            <PageBreadcrumb pageTitle="Academic Year Managment" />
-            <div className="space-y-6">
-                <CustomTable
-                    title="Academic Years"
-                    columns={columns}
-                    data={data}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                    enableSearch
-                />
-            </div>
-        </div>
-    );
+  const handleCreate = () => {
+    setEditData(null); // clear edit data
+    openModal();
+  };
+
+  const handleEdit = (row: AcademicYearData) => {
+    setEditData(row); // pass data to modal
+    openModal();
+  };
+
+  const handleDelete = (row: AcademicYearData) => {
+    setData((prev) => prev.filter((item) => item.srNo !== row.srNo));
+  };
+
+  const handleModalSubmit = (formValues: Omit<AcademicYearData, "srNo">) => {
+    if (editData) {
+      // Update record
+      setData((prev) =>
+        prev.map((item) =>
+          item.srNo === editData.srNo ? { ...item, ...formValues } : item
+        )
+      );
+    } else {
+      // Create new record
+      setData((prev) => [
+        ...prev,
+        { srNo: prev.length + 1, ...formValues },
+      ]);
+    }
+  };
+
+  return (
+    <div>
+      <PageBreadcrumb pageTitle="Academic Year Management" />
+      <div className="space-y-6">
+        {isOpen === true ? (
+          <AcademicYearModal
+            isOpen={isOpen}
+            onClose={closeModal}
+            onSubmit={handleModalSubmit}
+            initialData={editData}
+          />
+        ) : (
+          <CustomTable
+            title="Academic Years"
+            columns={columns}
+            data={data}
+            onAdd={handleCreate}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            sorting
+            enableSearch
+          />
+        )}
+      </div>
+    </div>
+  );
 }
