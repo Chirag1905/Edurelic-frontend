@@ -1,3 +1,4 @@
+'use client'
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import DefaultModal from "@/components/example/ModalExample/DefaultModal";
 import FormInModal from "@/components/example/ModalExample/FormInModal";
@@ -7,12 +8,12 @@ import VerticallyCenteredModal from "@/components/example/ModalExample/Verticall
 import { Metadata } from "next";
 import React from "react";
 
-export const metadata: Metadata = {
-  title: "Next.js Modals | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Modals page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
-  // other metadata
-};
+// export const metadata: Metadata = {
+//   title: "Next.js Modals | TailAdmin - Next.js Dashboard Template",
+//   description:
+//     "This is Next.js Modals page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+//   // other metadata
+// };
 
 export default function Modals() {
   return (
