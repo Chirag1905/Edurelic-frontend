@@ -4,41 +4,42 @@ import Label from "@/components/form/Label";
 import Input from "@/components/form/input/InputField";
 import Button from "@/components/ui/button/Button";
 import Switch from "@/components/form/switch/Switch";
-import { ClassType } from "./ClassType";
+import { BatchType } from "./BatchType";
 
-let classDefaultValues: ClassType = {
+let batchDefaultValues: BatchType = {
     id: 0,
     schoolId: 0,
-    academicYearId: 0,
-    name: "",
+    classId: 0,
+    batchName: "",
     capacity: 0,
+    classTeacherId: undefined,
     isActive: true,
     createdTs: "",
     updatedTs: "",
     dbUser: "system",
 };
 
-interface ClassModalProps {
+interface BatchModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: ClassType) => void;
-    initialData?: ClassType | null;
+    onSubmit: (data: BatchType) => void;
+    initialData?: BatchType | null;
 }
 
-const ClassModal: React.FC<ClassModalProps> = ({
+const BatchModal: React.FC<BatchModalProps> = ({
     isOpen,
     onClose,
     onSubmit,
     initialData,
 }) => {
-    const [formData, setFormData] = useState<ClassType>(classDefaultValues);
+    const [formData, setFormData] = useState<BatchType>(batchDefaultValues);
 
     // Populate form when editing
     useEffect(() => {
         if (initialData) {
             setFormData(initialData);
         } else {
-            setFormData(classDefaultValues);
+            setFormData(batchDefaultValues);
         }
     }, [initialData, isOpen]);
 
@@ -60,12 +61,12 @@ const ClassModal: React.FC<ClassModalProps> = ({
 
             <div className="px-6 grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
                 <div className="col-span-1">
-                    <Label>Class Name</Label>
+                    <Label>Batch Name</Label>
                     <Input
                         type="text"
-                        name="name"
-                        placeholder="Class Name"
-                        value={formData.name}
+                        name="batchName"
+                        placeholder="Batch Name"
+                        value={formData.batchName}
                         onChange={handleChange}
                     />
                 </div>
@@ -80,12 +81,12 @@ const ClassModal: React.FC<ClassModalProps> = ({
                     />
                 </div>
                 <div className="col-span-1">
-                    <Label>Academic Year ID</Label>
+                    <Label>Class ID</Label>
                     <Input
                         type="number"
-                        name="academicYearId"
-                        placeholder="Academic Year ID"
-                        value={formData.academicYearId}
+                        name="classId"
+                        placeholder="Class ID"
+                        value={formData.classId}
                         onChange={handleChange}
                     />
                 </div>
@@ -96,6 +97,16 @@ const ClassModal: React.FC<ClassModalProps> = ({
                         name="capacity"
                         placeholder="Capacity"
                         value={formData.capacity}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="col-span-1">
+                    <Label>Class Teacher ID</Label>
+                    <Input
+                        type="number"
+                        name="classTeacherId"
+                        placeholder="Class Teacher ID"
+                        value={formData.classTeacherId ?? ""}
                         onChange={handleChange}
                     />
                 </div>
@@ -123,4 +134,4 @@ const ClassModal: React.FC<ClassModalProps> = ({
     );
 };
 
-export default ClassModal;
+export default BatchModal;

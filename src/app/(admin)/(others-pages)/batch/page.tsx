@@ -4,15 +4,16 @@ import React, { useState } from "react";
 import CustomTable from "@/components/tables/CustomTable";
 import { useModal } from "@/hooks/useModal";
 import EmpoyeeModal from "./_components/ClassModal";
-import { ClassType } from "./_components/ClassType";
+import { BatchType } from "./_components/BatchType";
 
-const initialData: ClassType[] = [
+const initialData: BatchType[] = [
   {
     id: 1,
     schoolId: 1,
-    academicYearId: 2025,
-    name: "Class 1",
+    classId: 1,
+    batchName: "Batch A",
     capacity: 40,
+    classTeacherId: 101,
     isActive: true,
     createdTs: "2025-01-01T10:00:00Z",
     updatedTs: "2025-01-10T10:00:00Z",
@@ -21,9 +22,10 @@ const initialData: ClassType[] = [
   {
     id: 2,
     schoolId: 1,
-    academicYearId: 2025,
-    name: "Class 2",
-    capacity: 45,
+    classId: 2,
+    batchName: "Batch B",
+    capacity: 35,
+    classTeacherId: 102,
     isActive: true,
     createdTs: "2025-01-02T10:00:00Z",
     updatedTs: "2025-01-11T10:00:00Z",
@@ -32,10 +34,11 @@ const initialData: ClassType[] = [
   {
     id: 3,
     schoolId: 1,
-    academicYearId: 2025,
-    name: "Class 3",
+    classId: 3,
+    batchName: "Batch C",
     capacity: 50,
-    isActive: true,
+    classTeacherId: 103,
+    isActive: false,
     createdTs: "2025-01-03T10:00:00Z",
     updatedTs: "2025-01-12T10:00:00Z",
     dbUser: "system",
@@ -43,10 +46,11 @@ const initialData: ClassType[] = [
   {
     id: 4,
     schoolId: 2,
-    academicYearId: 2025,
-    name: "Class 4",
-    capacity: 35,
-    isActive: false,
+    classId: 4,
+    batchName: "Batch D",
+    capacity: 45,
+    classTeacherId: 104,
+    isActive: true,
     createdTs: "2025-01-04T10:00:00Z",
     updatedTs: "2025-01-13T10:00:00Z",
     dbUser: "system",
@@ -54,9 +58,10 @@ const initialData: ClassType[] = [
   {
     id: 5,
     schoolId: 2,
-    academicYearId: 2025,
-    name: "Class 5",
-    capacity: 42,
+    classId: 5,
+    batchName: "Batch E",
+    capacity: 38,
+    classTeacherId: 105,
     isActive: true,
     createdTs: "2025-01-05T10:00:00Z",
     updatedTs: "2025-01-14T10:00:00Z",
@@ -65,10 +70,11 @@ const initialData: ClassType[] = [
   {
     id: 6,
     schoolId: 2,
-    academicYearId: 2025,
-    name: "Class 6",
-    capacity: 48,
-    isActive: true,
+    classId: 6,
+    batchName: "Batch F",
+    capacity: 42,
+    classTeacherId: 106,
+    isActive: false,
     createdTs: "2025-01-06T10:00:00Z",
     updatedTs: "2025-01-15T10:00:00Z",
     dbUser: "system",
@@ -76,9 +82,10 @@ const initialData: ClassType[] = [
   {
     id: 7,
     schoolId: 3,
-    academicYearId: 2025,
-    name: "Class 7",
+    classId: 7,
+    batchName: "Batch G",
     capacity: 55,
+    classTeacherId: 107,
     isActive: true,
     createdTs: "2025-01-07T10:00:00Z",
     updatedTs: "2025-01-16T10:00:00Z",
@@ -87,9 +94,10 @@ const initialData: ClassType[] = [
   {
     id: 8,
     schoolId: 3,
-    academicYearId: 2025,
-    name: "Class 8",
+    classId: 8,
+    batchName: "Batch H",
     capacity: 60,
+    classTeacherId: 108,
     isActive: true,
     createdTs: "2025-01-08T10:00:00Z",
     updatedTs: "2025-01-17T10:00:00Z",
@@ -98,10 +106,11 @@ const initialData: ClassType[] = [
   {
     id: 9,
     schoolId: 3,
-    academicYearId: 2025,
-    name: "Class 9",
-    capacity: 65,
-    isActive: true,
+    classId: 9,
+    batchName: "Batch I",
+    capacity: 48,
+    classTeacherId: 109,
+    isActive: false,
     createdTs: "2025-01-09T10:00:00Z",
     updatedTs: "2025-01-18T10:00:00Z",
     dbUser: "system",
@@ -109,10 +118,11 @@ const initialData: ClassType[] = [
   {
     id: 10,
     schoolId: 4,
-    academicYearId: 2025,
-    name: "Class 10",
-    capacity: 70,
-    isActive: false,
+    classId: 10,
+    batchName: "Batch J",
+    capacity: 65,
+    classTeacherId: 110,
+    isActive: true,
     createdTs: "2025-01-10T10:00:00Z",
     updatedTs: "2025-01-19T10:00:00Z",
     dbUser: "system",
@@ -120,19 +130,20 @@ const initialData: ClassType[] = [
 ];
 
 
-const columns: { key: keyof ClassType; label: string }[] = [
+const columns: { key: keyof BatchType; label: string }[] = [
   { key: "id", label: "ID" },
-  { key: "name", label: "Class Name" },
+  { key: "batchName", label: "Batch Name" },
   { key: "schoolId", label: "School ID" },
-  { key: "academicYearId", label: "Academic Year" },
+  { key: "classId", label: "Class ID" },
   { key: "capacity", label: "Capacity" },
+  { key: "classTeacherId", label: "Class Teacher ID" },
   { key: "isActive", label: "Status" },
 ];
 
 export default function Class() {
   const [data, setData] = useState(initialData);
 
-  const [editData, setEditData] = useState<ClassType | null>(null);
+  const [editData, setEditData] = useState<BatchType | null>(null);
   const { isOpen, openModal, closeModal } = useModal();
 
   const handleCreate = () => {
@@ -140,16 +151,16 @@ export default function Class() {
     openModal();
   };
 
-  const handleEdit = (row: ClassType) => {
+  const handleEdit = (row: BatchType) => {
     setEditData(row); // pass data to modal
     openModal();
   };
 
-  const handleDelete = (row: ClassType) => {
+  const handleDelete = (row: BatchType) => {
     setData((prev) => prev.filter((item) => item.srNo !== row.srNo));
   };
 
-  const handleModalSubmit = (formValues: Omit<ClassType, "srNo">) => {
+  const handleModalSubmit = (formValues: Omit<BatchType, "srNo">) => {
     if (editData) {
       // Update record
       setData((prev) =>
@@ -181,22 +192,22 @@ export default function Class() {
           <>
             <div className="flex gap-4 items-center">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Select Academic Year</label>
-                <select className="border border-gray-300 rounded-md p-2">
-                  <option value="">All Years</option>
-                  <option value="2024">2024</option>
-                  <option value="2025">2025</option>
-                  <option value="2026">2026</option>
-                </select>
-              </div>
-              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Select School</label>
                 <select className="border border-gray-300 rounded-md p-2">
                   <option value="">All Schools</option>
-                  <option value="1">School 1</option>
-                  <option value="2">School 2</option>
-                  <option value="3">School 3</option>
-                  <option value="4">School 4</option>
+                  <option value="2024">Green Valley Public School</option>
+                  <option value="2025">Bluebird International School</option>
+                  <option value="2026">Lotus Valley School</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Select Class</label>
+                <select className="border border-gray-300 rounded-md p-2">
+                  <option value="">All Class</option>
+                  <option value="1">Class 1</option>
+                  <option value="2">Class 2</option>
+                  <option value="3">Class 3</option>
+                  <option value="4">Class 4</option>
                 </select>
               </div>
             </div>

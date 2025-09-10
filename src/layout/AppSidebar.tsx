@@ -37,6 +37,7 @@ const navItems: NavItem[] = [
       { name: "Employee", path: "/employee", pro: false },
       { name: "School", path: "/school", pro: false },
       { name: "Class", path: "/class", pro: false },
+      { name: "Batch", path: "/batch", pro: false },
     ],
   },
   {
