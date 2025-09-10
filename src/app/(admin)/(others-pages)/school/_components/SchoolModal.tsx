@@ -4,54 +4,51 @@ import Label from "@/components/form/Label";
 import Input from "@/components/form/input/InputField";
 import Button from "@/components/ui/button/Button";
 import Switch from "@/components/form/switch/Switch";
-import DatePicker from "@/components/form/date-picker";
-import { EmployeeType } from "./EmployeeType";
+import { SchoolType } from "./SchoolType";
 
-let employeeDefaultValues: EmployeeType = {
-    srNo: 0,
+let schoolDefaultValues: SchoolType = {
+    id: 0,
+    name: "",
+    affiliationNumber: "",
+    beginningYear: new Date().getFullYear(),
+    website: "",
+    emailDomain: "",
+    founder: "",
+    principal: "",
+    contactPhone: "",
+    contactEmail: "",
     address: "",
-    created_ts: "",
-    date_of_birth: "",
-    db_user: "",
-    department: "",
-    designation: "",
-    email: "",
-    emergency_contact: "",
-    employee_id: "",
-    employee_type: "TEACHER",
-    experience_years: 0,
-    first_name: "",
-    hire_date: "",
-    is_active: false,
-    last_name: "",
-    phone: "",
-    qualification: "",
-    salary: 0,
-    updated_ts: "",
-    school_id: 0,
-}
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "India",
+    isActive: true,
+    createdTs: "",
+    updatedTs: "",
+    dbUser: "system",
+};
 
-interface EmployeeModalProps {
+interface SchoolModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: EmployeeType) => void;
-    initialData?: EmployeeType | null;
+    onSubmit: (data: SchoolType) => void;
+    initialData?: SchoolType | null;
 }
 
-const EmployeeModal: React.FC<EmployeeModalProps> = ({
+const SchoolModal: React.FC<SchoolModalProps> = ({
     isOpen,
     onClose,
     onSubmit,
     initialData,
 }) => {
-    const [formData, setFormData] = useState<EmployeeType>(employeeDefaultValues);
+    const [formData, setFormData] = useState<SchoolType>(schoolDefaultValues);
 
     // Populate form when editing
     useEffect(() => {
         if (initialData) {
             setFormData(initialData);
         } else {
-            setFormData(employeeDefaultValues);
+            setFormData(schoolDefaultValues);
         }
     }, [initialData, isOpen]);
 
@@ -68,47 +65,97 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
     return (
         <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white pt-4 dark:border-white/[0.05] dark:bg-white/[0.03]">
             <h4 className="px-6 mb-6 text-lg font-medium text-gray-800 dark:text-white/90">
-                {initialData ? "Edit Employee" : "Create Employee"}
+                {initialData ? "Edit School" : "Create School"}
             </h4>
 
             <div className="px-6 grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
                 <div className="col-span-1">
-                    <Label>First Name</Label>
+                    <Label>School Name</Label>
                     <Input
                         type="text"
-                        name="first_name"
-                        placeholder="First Name"
-                        value={formData.first_name}
+                        name="name"
+                        placeholder="School Name"
+                        value={formData.name}
                         onChange={handleChange}
                     />
                 </div>
                 <div className="col-span-1">
-                    <Label>Last Name</Label>
+                    <Label>Affiliation Number</Label>
                     <Input
                         type="text"
-                        name="last_name"
-                        placeholder="Last Name"
-                        value={formData.last_name}
+                        name="affiliationNumber"
+                        placeholder="Affiliation Number"
+                        value={formData.affiliationNumber}
                         onChange={handleChange}
                     />
                 </div>
                 <div className="col-span-1">
-                    <Label>Email</Label>
+                    <Label>Beginning Year</Label>
+                    <Input
+                        type="number"
+                        name="beginningYear"
+                        placeholder="Beginning Year"
+                        value={formData.beginningYear}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="col-span-1">
+                    <Label>Website</Label>
+                    <Input
+                        type="text"
+                        name="website"
+                        placeholder="Website"
+                        value={formData.website}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="col-span-1">
+                    <Label>Email Domain</Label>
+                    <Input
+                        type="text"
+                        name="emailDomain"
+                        placeholder="Email Domain"
+                        value={formData.emailDomain}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="col-span-1">
+                    <Label>Founder</Label>
+                    <Input
+                        type="text"
+                        name="founder"
+                        placeholder="Founder"
+                        value={formData.founder}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="col-span-1">
+                    <Label>Principal</Label>
+                    <Input
+                        type="text"
+                        name="principal"
+                        placeholder="Principal"
+                        value={formData.principal}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="col-span-1">
+                    <Label>Contact Phone</Label>
+                    <Input
+                        type="text"
+                        name="contactPhone"
+                        placeholder="Contact Phone"
+                        value={formData.contactPhone}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="col-span-1">
+                    <Label>Contact Email</Label>
                     <Input
                         type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="col-span-1">
-                    <Label>Phone</Label>
-                    <Input
-                        type="text"
-                        name="phone"
-                        placeholder="Phone"
-                        value={formData.phone}
+                        name="contactEmail"
+                        placeholder="Contact Email"
+                        value={formData.contactEmail}
                         onChange={handleChange}
                     />
                 </div>
@@ -123,94 +170,52 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                     />
                 </div>
                 <div className="col-span-1">
-                    <Label>Designation</Label>
+                    <Label>City</Label>
                     <Input
                         type="text"
-                        name="designation"
-                        placeholder="Designation"
-                        value={formData.designation}
+                        name="city"
+                        placeholder="City"
+                        value={formData.city}
                         onChange={handleChange}
                     />
                 </div>
                 <div className="col-span-1">
-                    <Label>Department</Label>
+                    <Label>State</Label>
                     <Input
                         type="text"
-                        name="department"
-                        placeholder="Department"
-                        value={formData.department}
+                        name="state"
+                        placeholder="State"
+                        value={formData.state}
                         onChange={handleChange}
                     />
                 </div>
                 <div className="col-span-1">
-                    <Label>Qualification</Label>
+                    <Label>Postal Code</Label>
                     <Input
                         type="text"
-                        name="qualification"
-                        placeholder="Qualification"
-                        value={formData.qualification}
+                        name="postalCode"
+                        placeholder="Postal Code"
+                        value={formData.postalCode}
                         onChange={handleChange}
                     />
                 </div>
                 <div className="col-span-1">
-                    <Label>Salary</Label>
-                    <Input
-                        type="number"
-                        name="salary"
-                        placeholder="Salary"
-                        value={formData.salary}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="col-span-1">
-                    <Label>Employee Type</Label>
+                    <Label>Country</Label>
                     <Input
                         type="text"
-                        name="employee_type"
-                        placeholder="Employee Type"
-                        value={formData.employee_type}
+                        name="country"
+                        placeholder="Country"
+                        value={formData.country}
                         onChange={handleChange}
-                    />
-                </div>
-                <div className="col-span-1">
-                    <Label>Experience Years</Label>
-                    <Input
-                        type="number"
-                        name="experience_years"
-                        placeholder="Experience Years"
-                        value={formData.experience_years}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="col-span-1">
-                    <Label>Date of Birth</Label>
-                    <DatePicker
-                        id="date-of-birth"
-                        placeholder="Select date of birth"
-                        value={formData.date_of_birth}
-                        onChange={(_dates, dateStr) => {
-                            setFormData((prev) => ({ ...prev, date_of_birth: dateStr }));
-                        }}
-                    />
-                </div>
-                <div className="col-span-1">
-                    <Label>Hire Date</Label>
-                    <DatePicker
-                        id="hire-date"
-                        placeholder="Select hire date"
-                        value={formData.hire_date}
-                        onChange={(_dates, dateStr) => {
-                            setFormData((prev) => ({ ...prev, hire_date: dateStr }));
-                        }}
                     />
                 </div>
                 <div className="col-span-1 flex items-center">
                     <Label>Status</Label>
                     <Switch
                         label="Active"
-                        checked={formData.is_active}
+                        checked={formData.isActive}
                         onChange={(_event, checked) => {
-                            setFormData((prev) => ({ ...prev, is_active: checked }));
+                            setFormData((prev) => ({ ...prev, isActive: checked }));
                         }}
                     />
                 </div>
@@ -228,4 +233,4 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
     );
 };
 
-export default EmployeeModal;
+export default SchoolModal;

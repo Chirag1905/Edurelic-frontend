@@ -4,32 +4,10 @@ import React, { useState } from "react";
 import CustomTable from "@/components/tables/CustomTable";
 import { useModal } from "@/hooks/useModal";
 import EmpoyeeModal from "./_components/EmployeeModal";
+import { EmployeeType } from "./_components/EmployeeType";
 
-type initialDataType = {
-  srNo: number;
-  address: string;
-  created_ts: string;   // you used "NOW()", so keeping it string
-  date_of_birth: string;
-  db_user: string;
-  department: string;
-  designation: string;
-  email: string;
-  emergency_contact: string;
-  employee_id: string;
-  employee_type: "TEACHER" | "ADMIN" | "SUPPORT"; // union type from your data
-  experience_years: number;
-  first_name: string;
-  hire_date: string;
-  is_active: boolean;
-  last_name: string;
-  phone: string;
-  qualification: string;
-  salary: number;
-  updated_ts: string;
-  school_id: number;
-};
-
-const initialData: initialDataType[] = [
+// Sample initial data
+const initialData: EmployeeType[] = [
   {
     srNo: 1,
     address: "123 MG Road, Bangalore, Karnataka",
@@ -262,7 +240,7 @@ const initialData: initialDataType[] = [
   }
 ];
 
-const columns: { key: keyof initialDataType; label: string }[] = [
+const columns: { key: keyof EmployeeType; label: string }[] = [
   { key: "srNo", label: "Sr No" },
   { key: "employee_id", label: "Employee ID" },
   { key: "first_name", label: "First Name" },
@@ -273,7 +251,7 @@ const columns: { key: keyof initialDataType; label: string }[] = [
 export default function Employee() {
   const [data, setData] = useState(initialData);
 
-  const [editData, setEditData] = useState<initialDataType | null>(null);
+  const [editData, setEditData] = useState<EmployeeType | null>(null);
   const { isOpen, openModal, closeModal } = useModal();
 
   const handleCreate = () => {
@@ -281,16 +259,16 @@ export default function Employee() {
     openModal();
   };
 
-  const handleEdit = (row: initialDataType) => {
+  const handleEdit = (row: EmployeeType) => {
     setEditData(row); // pass data to modal
     openModal();
   };
 
-  const handleDelete = (row: initialDataType) => {
+  const handleDelete = (row: EmployeeType) => {
     setData((prev) => prev.filter((item) => item.srNo !== row.srNo));
   };
 
-  const handleModalSubmit = (formValues: Omit<initialDataType, "srNo">) => {
+  const handleModalSubmit = (formValues: Omit<EmployeeType, "srNo">) => {
     if (editData) {
       // Update record
       setData((prev) =>
