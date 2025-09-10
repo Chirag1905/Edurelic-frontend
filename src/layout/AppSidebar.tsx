@@ -36,6 +36,7 @@ const navItems: NavItem[] = [
       { name: "Academic Year", path: "/academicYear", pro: false },
       { name: "Employee", path: "/employee", pro: false },
       { name: "School", path: "/school", pro: false },
+      { name: "Class", path: "/class", pro: false },
     ],
   },
   {
