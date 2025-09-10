@@ -59,6 +59,7 @@ export default function AcademicYear() {
 
   const handleModalSubmit = (formValues: Omit<AcademicYearData, "srNo">) => {
     if (editData) {
+      console.log("🚀 ~ handleModalSubmit ~ editData:", editData)
       // Update record
       setData((prev) =>
         prev.map((item) =>
@@ -66,6 +67,7 @@ export default function AcademicYear() {
         )
       );
     } else {
+      console.log("🚀 ~ handleModalSubmit ~ formValues:", formValues)
       // Create new record
       setData((prev) => [
         ...prev,

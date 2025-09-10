@@ -24,12 +24,18 @@ interface TableRowProps {
   className?: string; // Optional className for styling
 }
 
+type BaseProps = {
+  children: ReactNode;
+  isHeader?: boolean;
+  className?: string;
+} & React.HTMLAttributes<HTMLTableCellElement>; // <-- allows colSpan, rowSpan, style, etc.
+
 // Props for TableCell
-interface TableCellProps {
-  children: ReactNode; // Cell content
-  isHeader?: boolean; // If true, renders as <th>, otherwise <td>
-  className?: string; // Optional className for styling
-}
+// interface TableCellProps {
+//   children: ReactNode; // Cell content
+//   isHeader?: boolean; // If true, renders as <th>, otherwise <td>
+//   className?: string; // Optional className for styling
+// }
 
 // Table Component
 const Table: React.FC<TableProps> = ({ children, className }) => {
@@ -51,14 +57,22 @@ const TableRow: React.FC<TableRowProps> = ({ children, className }) => {
   return <tr className={className}>{children}</tr>;
 };
 
-// TableCell Component
-const TableCell: React.FC<TableCellProps> = ({
-  children,
-  isHeader = false,
-  className,
-}) => {
-  const CellTag = isHeader ? "th" : "td";
-  return <CellTag className={` ${className}`}>{children}</CellTag>;
+const TableCell: React.FC<BaseProps> = ({ children, isHeader = false, className, ...rest }) => {
+  if (isHeader) {
+    // cast rest to proper th attrs
+    return <th className={className} {...(rest as React.ThHTMLAttributes<HTMLTableCellElement>)}>{children}</th>;
+  }
+  return <td className={className} {...(rest as React.TdHTMLAttributes<HTMLTableCellElement>)}>{children}</td>;
 };
+
+// TableCell Component
+// const TableCell: React.FC<TableCellProps> = ({
+//   children,
+//   isHeader = false,
+//   className,
+// }) => {
+//   const CellTag = isHeader ? "th" : "td";
+//   return <CellTag className={` ${className}`}>{children}</CellTag>;
+// };
 
 export { Table, TableHeader, TableBody, TableRow, TableCell };

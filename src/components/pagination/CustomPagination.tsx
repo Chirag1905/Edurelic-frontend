@@ -1,67 +1,5 @@
-// import { ArrowRightIcon } from "@/icons";
-
-// type PaginationProps = {
-//   currentPage: number;
-//   totalPages: number;
-//   onPageChange: (page: number) => void;
-// };
-
-// page, totalPages, handleChange, totalElements, rowsPerPage, handleChangeRowsPerPage
-// const Pagination: React.FC<PaginationProps> = ({
-//   currentPage,
-//   totalPages,
-//   onPageChange,
-// }) => {
-//   const pagesAroundCurrent = Array.from(
-//     { length: Math.min(3, totalPages) },
-//     (_, i) => i + Math.max(currentPage - 1, 1)
-//   );
-
-//   return (
-//     <div className="px-6 py-4 border-t border-gray-200 dark:border-white/[0.05]">
-//       <div className="flex items-center justify-between">
-//         <button
-//           onClick={() => onPageChange(currentPage - 1)}
-//           disabled={currentPage === 1}
-//           className="inline-flex items-center justify-center font-medium gap-2 rounded-lg transition  px-4 py-3 text-sm bg-white text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03] dark:hover:text-gray-300"
-//         >
-//           <span className="mr-2 rotate-180"><ArrowRightIcon /></span>
-//           <span className="hidden sm:inline">Previous</span>
-//         </button>
-//         <div className="flex items-center gap-2">
-//           {currentPage > 3 && <span className="px-2">...</span>}
-//           {pagesAroundCurrent.map((page) => (
-//             <button
-//               key={page}
-//               onClick={() => onPageChange(page)}
-//               className={`px-4 py-2 rounded ${currentPage === page
-//                 ? "bg-brand-500 text-white"
-//                 : "text-gray-700 dark:text-gray-400"
-//                 } flex h-10 w-10 items-center justify-center rounded-lg text-theme-sm font-medium bg-brand-500 text-white`}
-//             >
-//               {page}
-//             </button>
-//           ))}
-//           {currentPage < totalPages - 2 && <span className="px-2">...</span>}
-//         </div>
-//         <button
-//           onClick={() => onPageChange(currentPage + 1)}
-//           disabled={currentPage === totalPages}
-//           className="ml-2.5 flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-gray-700 shadow-theme-xs text-sm hover:bg-gray-50 h-10 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03]"
-//         >
-//           <span className="hidden sm:inline">Next</span>
-//           <span className="ml-2"><ArrowRightIcon /></span>
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Pagination;
-
-
-import { ArrowRightIcon } from "@/icons";
-import React, { useState } from "react";
+import { AngleDownIcon, AngleUpIcon, ArrowRightIcon } from "@/icons";
+import React, { useEffect, useRef, useState } from "react";
 
 type CustomPaginationProps = {
   page: number; // current page (1-based index)
@@ -82,6 +20,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
 }) => {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const rowsOptions = [10, 25, 50, 100];
 
@@ -114,44 +53,64 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   const startItem = totalElements === 0 ? 0 : (page - 1) * rowsPerPage + 1;
   const endItem = Math.min(page * rowsPerPage, totalElements);
 
+  // ✅ Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="px-6 py-4 border-t border-gray-200 dark:border-white/[0.05]">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-
         <div className="flex items-center gap-4">
           {/* Rows per page selector */}
-          {/* Custom Rows per Page Dropdown */}
-          {totalElements > 10 && <div className="relative">
+          <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center justify-between gap-2 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-400 w-20"
+              className="flex items-center justify-between gap-2 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-400 w-15"
             >
               {rowsPerPage}
-              <span className="text-gray-500">▼</span>
+              <span className="text-gray-500">
+                {isDropdownOpen === true ? <AngleUpIcon /> : <AngleDownIcon />}
+              </span>
             </button>
 
             {isDropdownOpen && (
-              <div className="absolute mt-2 w-24 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+              <div className="absolute mt-2 w-15 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-400 rounded-lg z-10">
                 <ul className="max-h-40 overflow-auto">
-                  {rowsOptions.map((size) => (
-                    <li
-                      key={size}
-                      onClick={() => {
-                        handleChangeRowsPerPage(size);
-                        setIsDropdownOpen(false);
-                      }}
-                      className={`px-4 py-2 cursor-pointer text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${rowsPerPage === size
-                        ? "bg-gray-100 dark:bg-gray-700 font-medium"
-                        : ""
-                        }`}
-                    >
-                      {size}
-                    </li>
-                  ))}
+                  {rowsOptions
+                    .filter((size) => size !== rowsPerPage)
+                    .map((size) => (
+                      <li
+                        key={size}
+                        onClick={() => {
+                          handleChangeRowsPerPage(size);
+                          setIsDropdownOpen(false);
+                        }}
+                        className={`rounded-lg px-3 py-2 cursor-pointer text-sm border-b border-gray-300 dark:border-gray-700 last:border-b-0 hover:bg-gray-100 dark:hover:bg-gray-700 ${rowsPerPage === size
+                          ? "bg-gray-100 dark:bg-gray-700 font-medium"
+                          : ""
+                          }`}
+                      >
+                        {size}
+                      </li>
+                    ))}
                 </ul>
               </div>
             )}
-          </div>}
+          </div>
 
           {/* Total Elements Info */}
           <div className="text-sm text-gray-600 dark:text-gray-400">

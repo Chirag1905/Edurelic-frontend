@@ -51,13 +51,13 @@ export default function CustomTable<T>({
   const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
   const [searchQuery, setSearchQuery] = useState("");
 
-   // Calculate the number of columns for the "No data" row to span
+  // Calculate the number of columns for the "No data" row to span
   const hasStatusColumn = data.length > 0 && data.some((row) => row.hasOwnProperty("status"));
   const hasActionsColumn = onEdit || onDelete;
   const totalColumns = columns.length + (hasStatusColumn ? 1 : 0) + (hasActionsColumn ? 1 : 0);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white pt-4 dark:border-white/[0.05] dark:bg-white/[0.03]">
+    <div className="relative rounded-2xl border border-gray-200 bg-white pt-4 dark:border-white/[0.05] dark:bg-white/[0.03]">
       {/* Header */}
       <div className="flex flex-col gap-4 px-6 mb-4 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">{title} Listing</h3>
@@ -159,24 +159,34 @@ export default function CustomTable<T>({
 
           {/* Table Body */}
           <TableBody className="text-center divide-y divide-gray-100 dark:divide-white/[0.05]">
-            {data ? (
-              // {!data || data.length === 0 ? (
-             <TableRow>
-                <TableCell 
-                  className="text-center dark:text-white py-10"
+            {!data || data.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={totalColumns} // Span across all columns
+                  className="text-center py-10 dark:text-white"
                 >
                   <div className="flex flex-col items-center justify-center">
-                    <svg width="64" height="41" viewBox="0 0 64 41" xmlns="http://www.w3.org/2000/svg">
+                    <svg
+                      width="64"
+                      height="41"
+                      viewBox="0 0 64 41"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
                       <title>No data</title>
                       <g transform="translate(0 1)" fill="none" fillRule="evenodd">
                         <ellipse fill="#f5f5f5" cx="32" cy="33" rx="32" ry="7"></ellipse>
                         <g fillRule="nonzero" stroke="#d9d9d9">
                           <path d="M55 12.76L44.854 1.258C44.367.474 43.656 0 42.907 0H21.093c-.749 0-1.46.474-1.947 1.257L9 12.761V22h46v-9.24z"></path>
-                          <path d="M41.613 15.931c0-1.605.994-2.93 2.227-2.931H55v18.137C55 33.26 53.68 35 52.05 35h-40.1C10.32 35 9 33.259 9 31.137V13h11.16c1.233 0 2.227 1.323 2.227 2.928v.022c0 1.605 1.005 2.901 2.237 2.901h14.752c1.232 0 2.237-1.308 2.237-2.913v-.007z" fill="#fafafa"></path>
+                          <path
+                            d="M41.613 15.931c0-1.605.994-2.93 2.227-2.931H55v18.137C55 33.26 53.68 35 52.05 35h-40.1C10.32 35 9 33.259 9 31.137V13h11.16c1.233 0 2.227 1.323 2.227 2.928v.022c0 1.605 1.005 2.901 2.237 2.901h14.752c1.232 0 2.237-1.308 2.237-2.913v-.007z"
+                            fill="#fafafa"
+                          ></path>
                         </g>
                       </g>
                     </svg>
-                    <p className="mt-4 text-gray-500 dark:text-gray-400">No data available</p>
+                    <p className="mt-4 text-gray-500 dark:text-gray-400">
+                      No data available
+                    </p>
                   </div>
                 </TableCell>
               </TableRow>
