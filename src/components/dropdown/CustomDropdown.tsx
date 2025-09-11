@@ -44,8 +44,8 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
     position === "right"
       ? "right-0"
       : position === "center"
-      ? "left-1/2 transform -translate-x-1/2"
-      : "left-0";
+        ? "left-1/2 transform -translate-x-1/2"
+        : "left-0";
 
   return (
     <div ref={dropdownRef} className={`relative inline-block ${className}`}>
@@ -56,9 +56,8 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       >
         {buttonLabel}
         <svg
-          className={`duration-200 ease-in-out stroke-current transform ${
-            isOpen ? "rotate-180" : "rotate-0"
-          }`}
+          className={`duration-200 ease-in-out stroke-current transform ${isOpen ? "rotate-180" : "rotate-0"
+            }`}
           width="20"
           height="20"
           viewBox="0 0 20 20"
@@ -78,7 +77,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       {/* Dropdown Menu */}
       {isOpen && (
         <div
-          className={`absolute top-full z-40 mt-2 min-w-[220px] rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-[#1E2635] ${positionClasses}`}
+          className={`absolute top-full z-40 mt-2 min-w-fit rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-[#1E2635] ${positionClasses}`}
         >
           <ul className="flex flex-col gap-1">
             {menuItems.map((item, index) => (

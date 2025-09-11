@@ -16,28 +16,73 @@ import {
   PlugInIcon,
   TableIcon,
   UserCircleIcon,
-  PinIcon, // Add a pin icon in your icons folder
+  PinIcon,
+  PinIconFilled,
+  Books,
+  CalendarCog,
+  CampusLogo,
+  CourseLogo,
+  BatchLogo,
 } from "../icons/index";
-import SidebarWidget from "./SidebarWidget";
+// import SidebarWidget from "./SidebarWidget";
 
 type NavItem = {
   name: string;
   icon: React.ReactNode;
   path?: string;
-  subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  subItems?: { name: string; icon: React.ReactNode; path: string; pro?: boolean; new?: boolean }[];
 };
 
-const navItems: NavItem[] = [
+// Menu for User
+const userNavItems: NavItem[] = [
+  { name: "Dashboard", icon: <GridIcon />, path: "/" },
   {
-    name: "Dashboard",
-    icon: <GridIcon />,
+    name: "Academics",
+    icon: <Books />,
     subItems: [
-      { name: "Ecommerce", path: "/", pro: false },
-      { name: "Academic Year", path: "/academicYear", pro: false },
-      { name: "Employee", path: "/employee", pro: false },
-      { name: "School", path: "/school", pro: false },
-      { name: "Class", path: "/class", pro: false },
-      { name: "Batch", path: "/batch", pro: false },
+      { name: "Academic Year", icon: <CalendarCog />, path: "/user/academicYear" },
+      { name: "Employee", icon: <CalenderIcon />, path: "/user/employee" },
+      { name: "Course", icon: <CourseLogo />, path: "/user/course" },
+      { name: "Batch", icon: <BatchLogo />, path: "/user/batch" },
+    ],
+  },
+  { name: "Calendar", icon: <CalenderIcon />, path: "/calendar" },
+  { name: "User Profile", icon: <UserCircleIcon />, path: "/profile" },
+];
+
+// Menu for Admin
+const adminNavItems: NavItem[] = [
+  { name: "Dashboard", icon: <GridIcon />, path: "/" },
+  {
+    name: "Campuses",
+    icon: <Books />,
+    subItems: [
+      { name: "Campus Group", icon: <CampusLogo />, path: "/admin/campusGroup" },
+      { name: "Campus", icon: <CampusLogo />, path: "/admin/campus" },
+      { name: "Employee", icon: <CampusLogo />, path: "/admin/employee" },
+    ],
+  },
+  { name: "Calendar", icon: <CalenderIcon />, path: "/calendar" },
+  { name: "User Profile", icon: <UserCircleIcon />, path: "/profile" },
+];
+
+const navItems: NavItem[] = [
+  { name: "Dashboard", icon: <GridIcon />, path: "/", },
+  {
+    name: "Academics", icon: <Books />, subItems: [
+      { name: "Academic Year", icon: <CalendarCog />, path: "/user/academicYear" },
+      { name: "Employee", icon: <CalenderIcon />, path: "/user/employee" },
+      { name: "Course", icon: <CourseLogo />, path: "/user/course" },
+      { name: "Batch", icon: <BatchLogo />, path: "/user/batch" },
+    ],
+  },
+  {
+    name: "Campuses",
+    icon: <Books />,
+    subItems: [
+      { name: "Campus Group", icon: <CampusLogo />, path: "/admin/campusGroup" },
+      { name: "Campus", icon: <CampusLogo />, path: "/admin/campus" },
+      { name: "Employee", icon: <CampusLogo />, path: "/admin/employee" },
     ],
   },
   {
@@ -53,19 +98,19 @@ const navItems: NavItem[] = [
   {
     name: "Forms",
     icon: <ListIcon />,
-    subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
+    subItems: [{ name: "Form Elements", icon: <CalenderIcon />, path: "/form-elements" }],
   },
   {
     name: "Tables",
     icon: <TableIcon />,
-    subItems: [{ name: "Basic Tables", path: "/basic-tables", pro: false }],
+    subItems: [{ name: "Basic Tables", icon: <CalenderIcon />, path: "/basic-tables" }],
   },
   {
     name: "Pages",
     icon: <PageIcon />,
     subItems: [
-      { name: "Blank Page", path: "/blank", pro: false },
-      { name: "404 Error", path: "/error-404", pro: false },
+      { name: "Blank Page", icon: <CalenderIcon />, path: "/blank" },
+      { name: "404 Error", icon: <CalenderIcon />, path: "/error-404" },
     ],
   },
 ];
@@ -75,35 +120,44 @@ const othersItems: NavItem[] = [
     icon: <PieChartIcon />,
     name: "Charts",
     subItems: [
-      { name: "Line Chart", path: "/line-chart", pro: false },
-      { name: "Bar Chart", path: "/bar-chart", pro: false },
+      { name: "Line Chart", icon: <CalenderIcon />, path: "/line-chart", pro: false },
+      { name: "Bar Chart", icon: <CalenderIcon />, path: "/bar-chart", pro: false },
     ],
   },
   {
     icon: <BoxCubeIcon />,
     name: "UI Elements",
     subItems: [
-      { name: "Alerts", path: "/alerts", pro: false },
-      { name: "Avatar", path: "/avatars", pro: false },
-      { name: "Badge", path: "/badge", pro: false },
-      { name: "Buttons", path: "/buttons", pro: false },
-      { name: "Images", path: "/images", pro: false },
-      { name: "Videos", path: "/videos", pro: false },
+      { name: "Alerts", icon: <CalenderIcon />, path: "/alerts", pro: false },
+      { name: "Avatar", icon: <CalenderIcon />, path: "/avatars", pro: false },
+      { name: "Badge", icon: <CalenderIcon />, path: "/badge", pro: false },
+      { name: "Buttons", icon: <CalenderIcon />, path: "/buttons", pro: false },
+      { name: "Images", icon: <CalenderIcon />, path: "/images", pro: false },
+      { name: "Videos", icon: <CalenderIcon />, path: "/videos", pro: false },
     ],
   },
   {
     icon: <PlugInIcon />,
     name: "Authentication",
     subItems: [
-      { name: "Sign In", path: "/signin", pro: false },
-      { name: "Sign Up", path: "/signup", pro: false },
+      { name: "Sign In", icon: <CalenderIcon />, path: "/signin", pro: false },
+      { name: "Sign Up", icon: <CalenderIcon />, path: "/signup", pro: false },
     ],
   },
 ];
 
-const AppSidebar: React.FC = () => {
+const Sidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
+  const isUserRoute = pathname.startsWith("/user");
+  const isAdminRoute = pathname.startsWith("/admin");
+
+  // Dynamically filter menu items
+  const filteredNavItems = [
+    ...(isUserRoute ? userNavItems : []),
+    ...(isAdminRoute ? adminNavItems : []),
+    ...othersItems,
+  ];
 
   /** =========================
    * STATE FOR PINNED ITEMS
@@ -206,14 +260,14 @@ const AppSidebar: React.FC = () => {
                         href={subItem.path}
                         className={`menu-dropdown-item ${isActive(subItem.path) ? "menu-dropdown-item-active" : "menu-dropdown-item-inactive"}`}
                       >
-                        {subItem.name}
+                        <span className="flex items-center gap-3">{subItem.icon}{subItem.name}</span>
+                        <button
+                          onClick={() => togglePin({ name: subItem.name, path: subItem.path, icon: nav.icon })}
+                          className="ml-2 text-gray-400 hover:text-brand-500 justify-end"
+                        >
+                          {isPinned(subItem.path) ? <PinIconFilled className="text-brand-500" /> : <PinIcon />}
+                        </button>
                       </Link>
-                      <button
-                        onClick={() => togglePin({ name: subItem.name, path: subItem.path, icon: nav.icon })}
-                        className="ml-2 text-gray-400 hover:text-brand-500"
-                      >
-                        <PinIcon className={isPinned(subItem.path) ? "text-brand-500" : "text-gray-400"} />
-                      </button>
                     </li>
                   ))}
                 </ul>
@@ -226,15 +280,17 @@ const AppSidebar: React.FC = () => {
                   href={nav.path}
                   className={`menu-item group ${isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"}`}
                 >
-                  <span className={`${isActive(nav.path) ? "menu-item-icon-active" : "menu-item-icon-inactive"}`}>{nav.icon}</span>
-                  {(isExpanded || isHovered || isMobileOpen) && <span className="menu-item-text">{nav.name}</span>}
+                  <p className="flex items-center gap-3">
+                    <span className={`${isActive(nav.path) ? "menu-item-icon-active" : "menu-item-icon-inactive"}`}>{nav.icon}</span>
+                    {(isExpanded || isHovered || isMobileOpen) && <span className="menu-item-text">{nav.name}</span>}
+                  </p>
+                  {/* <button
+                    onClick={() => togglePin({ name: nav.name, path: nav.path, icon: nav.icon })}
+                    className="ml-2 text-gray-400 hover:text-brand-500"
+                  >
+                    {isPinned(nav.path) ? <PinIconFilled className="text-brand-500" /> : <PinIcon />}
+                  </button> */}
                 </Link>
-                <button
-                  onClick={() => togglePin({ name: nav.name, path: nav.path, icon: nav.icon })}
-                  className="ml-2 text-gray-400 hover:text-brand-500"
-                >
-                  <PinIcon className={isPinned(nav.path) ? "text-brand-500" : "text-gray-400"} />
-                </button>
               </div>
             )
           )}
@@ -315,10 +371,12 @@ const AppSidebar: React.FC = () => {
                       href={item.path}
                       className={`menu-item group ${isActive(item.path) ? "menu-item-active" : "menu-item-inactive"}`}
                     >
-                      <span className={isActive(item.path) ? "menu-item-icon-active" : "menu-item-icon-inactive"}>
-                        {item.icon}
-                      </span>
-                      {(isExpanded || isHovered || isMobileOpen) && <span className="menu-item-text">{item.name}</span>}
+                      <p className="flex items-center gap-3">
+                        <span className={isActive(item.path) ? "menu-item-icon-active" : "menu-item-icon-inactive"}>
+                          {item.icon}
+                        </span>
+                        {(isExpanded || isHovered || isMobileOpen) && <span className="menu-item-text">{item.name}</span>}
+                      </p>
                     </Link>
                   </li>
                 ))}
@@ -328,26 +386,27 @@ const AppSidebar: React.FC = () => {
 
           {/* Main Menu */}
           <div>
-            <h2 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}>
+            <h2 className={`mt-4 mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}>
               {isExpanded || isHovered || isMobileOpen ? "Menu" : <HorizontaLDots />}
             </h2>
-            {renderMenuItems(navItems, "main")}
+            {/* {renderMenuItems(navItems, "main")} */}
+            {renderMenuItems(filteredNavItems, "main")}
           </div>
 
           {/* Others */}
-          <div>
-            <h2 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}>
+          {/* <div>
+            <h2 className={`mt-4 mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"}`}>
               {isExpanded || isHovered || isMobileOpen ? "Others" : <HorizontaLDots />}
             </h2>
             {renderMenuItems(othersItems, "others")}
-          </div>
+          </div> */}
         </nav>
 
         {/* Sidebar Widget */}
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
+        {/* {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null} */}
       </div>
     </aside>
   );
 };
 
-export default AppSidebar;
+export default Sidebar;

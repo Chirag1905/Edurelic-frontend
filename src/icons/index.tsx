@@ -53,6 +53,11 @@ import MoreDotIcon from "./more-dot.svg";
 import BellIcon from "./bell.svg";
 import PinIcon from "./pin.svg";
 import PinIconFilled from "./pin-filled.svg";
+import Books from "./books.svg";
+import CalendarCog from "./calendar-cog.svg";
+import CampusLogo from "./school.svg";
+import CourseLogo from "./certificate-2.svg";
+import BatchLogo from "./contract.svg";
 
 export {
   DownloadIcon,
@@ -109,5 +114,10 @@ export {
   ChevronUpIcon,
   ChatIcon,
   PinIcon,
-  PinIconFilled
+  PinIconFilled,
+  Books,
+  CalendarCog,
+  CampusLogo,
+  CourseLogo,
+  BatchLogo,
 };

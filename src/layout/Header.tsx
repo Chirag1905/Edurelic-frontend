@@ -1,13 +1,15 @@
 "use client";
 import { ThemeToggleButton } from "@/components/common/ThemeToggleButton";
+import CustomDropdown from "@/components/dropdown/CustomDropdown";
 import NotificationDropdown from "@/components/header/NotificationDropdown";
 import UserDropdown from "@/components/header/UserDropdown";
 import { useSidebar } from "@/context/SidebarContext";
+import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState ,useEffect,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 
-const AppHeader: React.FC = () => {
+const Header: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
@@ -39,6 +41,22 @@ const AppHeader: React.FC = () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  /** Generate next 5 academic years */
+  const currentYear = dayjs().year();
+  const academicYearOptions = Array.from({ length: 5 }, (_, i) => {
+    const startYear = currentYear + i + 1; // start from next year
+    const endYear = startYear + 1;
+    return `${startYear}-${endYear}`;
+  });
+
+  const dropdownItems = academicYearOptions.map((year) => ({
+    label: year,
+    onClick: () => {
+      // handleChange("academicYearName", year);
+      // setDropdownLabel(year);
+    },
+  }));
 
   return (
     <header className="sticky top-0 flex w-full bg-white border-gray-200 z-99999 dark:border-gray-800 dark:bg-gray-900 lg:border-b">
@@ -155,26 +173,30 @@ const AppHeader: React.FC = () => {
             </form>
           </div>
         </div>
+        <CustomDropdown
+          buttonLabel={"2025-2026"}
+          menuItems={dropdownItems}
+          className="w-full ml-2"
+        />
         <div
-          className={`${
-            isApplicationMenuOpen ? "flex" : "hidden"
-          } items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
+          className={`${isApplicationMenuOpen ? "flex" : "hidden"
+            } items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-theme-md lg:justify-end lg:px-0 lg:shadow-none`}
         >
           <div className="flex items-center gap-2 2xsm:gap-3">
             {/* <!-- Dark Mode Toggler --> */}
             <ThemeToggleButton />
             {/* <!-- Dark Mode Toggler --> */}
 
-           <NotificationDropdown /> 
+            <NotificationDropdown />
             {/* <!-- Notification Menu Area --> */}
           </div>
           {/* <!-- User Area --> */}
-          <UserDropdown /> 
-    
+          <UserDropdown />
+
         </div>
       </div>
     </header>
   );
 };
 
-export default AppHeader;
+export default Header;
