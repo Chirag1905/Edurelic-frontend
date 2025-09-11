@@ -137,7 +137,7 @@ const Header: React.FC = () => {
               />
             </svg>
           </button>
-
+          {/* Search Form */}
           <div className="hidden lg:block">
             <form>
               <div className="relative">
